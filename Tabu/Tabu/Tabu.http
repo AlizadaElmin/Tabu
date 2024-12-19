@@ -1,0 +1,6 @@
+@Tabu_HostAddress = http://localhost:5039
+
+GET {{Tabu_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
