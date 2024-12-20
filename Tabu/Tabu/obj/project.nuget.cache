@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TZ5YyZ+p2oo=",
+  "dgSpecHash": "hinKhcF4UZM=",
   "success": true,
-  "projectFilePath": "/Users/elmin/RiderProjects/Tabu/Tabu/Tabu.csproj",
+  "projectFilePath": "/Users/elmin/Desktop/Code/Tabu/Tabu/Tabu/Tabu.csproj",
   "expectedPackageFiles": [
     "/Users/elmin/.nuget/packages/automapper/13.0.1/automapper.13.0.1.nupkg.sha512",
     "/Users/elmin/.nuget/packages/azure.core/1.38.0/azure.core.1.38.0.nupkg.sha512",

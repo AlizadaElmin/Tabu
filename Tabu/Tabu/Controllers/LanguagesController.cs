@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tabu.DAL;
 using Tabu.DTOs.Languages;
+using Tabu.Exceptions;
 using Tabu.Services.Abstracts;
 
 namespace Tabu.Controllers;
@@ -14,38 +15,127 @@ public class LanguagesController(ILanguageService _service):ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllLanguages()
     {
-        var languages = await  _service.GetAllAsync();
-        return Ok(languages);
+        return Ok(await  _service.GetAllAsync());
     }
 
     [HttpGet]
-    [Route("{id}")]
-    public async Task<IActionResult> GetLanguageById(string id)
+    [Route("{code}")]
+    public async Task<IActionResult> GetLanguageById(string code)
     {
-       var language= await _service.GetByCodeAsync(id);
-       return Ok(language);
+        try
+        {
+            var language = await _service.GetByCodeAsync(code);
+            return Ok(language);
+        }
+        catch (Exception ex)
+        {
+            if (ex is IBaseException ibe)
+            {
+                return StatusCode(ibe.StatusCode, new
+                {
+                    StatusCode = ibe.StatusCode,
+                    Message = ibe.ErrorMessage,
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = ex.Message
+                });
+            }
+        }
     }
     
     [HttpPost]
     public async Task<IActionResult> Post(LanguageCreateDto dto)
     {
-        await _service.CreateAsync(dto);
-        return Created();
+        try
+        {
+            await _service.CreateAsync(dto);
+            return Created();
+        }
+        catch (Exception ex)
+        {
+            if (ex is IBaseException ibe)
+            {
+                return StatusCode(ibe.StatusCode, new
+                {
+                    StatusCode = ibe.StatusCode,
+                    Message = ibe.ErrorMessage,
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = ex.Message
+                });
+            }
+        }
+     
     }
     
     [HttpPut]
-    [Route("{id}")]
-    public async Task<IActionResult> Put(string id,LanguageUpdateDto dto)
+    [Route("{code}")]
+    public async Task<IActionResult> Put(string code,LanguageUpdateDto dto)
     {
-        await _service.UpdateAsync(id,dto);
-        return Ok();
+        try
+        {
+            await _service.UpdateAsync(code,dto);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            if (ex is IBaseException ibe)
+            {
+                return StatusCode(ibe.StatusCode, new
+                {
+                    StatusCode = ibe.StatusCode,
+                    Message = ibe.ErrorMessage,
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = ex.Message
+                });
+            }
+        }
     }
 
     [HttpDelete]
-    [Route("{id}")]
-    public async Task<IActionResult> Delete(string id)
+    [Route("{code}")]
+    public async Task<IActionResult> Delete(string code)
     {
-       await _service.DeleteAsync(id);
-        return Ok();
+        try
+        {
+            await _service.DeleteAsync(code);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            if (ex is IBaseException ibe)
+            {
+                return StatusCode(ibe.StatusCode, new
+                {
+                    StatusCode = ibe.StatusCode,
+                    Message = ibe.ErrorMessage,
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = ex.Message
+                });
+            }
+        }
+   
     }
 }

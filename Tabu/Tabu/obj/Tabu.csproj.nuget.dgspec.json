@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/elmin/RiderProjects/Tabu/Tabu/Tabu.csproj": {}
+    "/Users/elmin/Desktop/Code/Tabu/Tabu/Tabu/Tabu.csproj": {}
   },
   "projects": {
-    "/Users/elmin/RiderProjects/Tabu/Tabu/Tabu.csproj": {
+    "/Users/elmin/Desktop/Code/Tabu/Tabu/Tabu/Tabu.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/elmin/RiderProjects/Tabu/Tabu/Tabu.csproj",
+        "projectUniqueName": "/Users/elmin/Desktop/Code/Tabu/Tabu/Tabu/Tabu.csproj",
         "projectName": "Tabu",
-        "projectPath": "/Users/elmin/RiderProjects/Tabu/Tabu/Tabu.csproj",
+        "projectPath": "/Users/elmin/Desktop/Code/Tabu/Tabu/Tabu/Tabu.csproj",
         "packagesPath": "/Users/elmin/.nuget/packages/",
-        "outputPath": "/Users/elmin/RiderProjects/Tabu/Tabu/obj/",
+        "outputPath": "/Users/elmin/Desktop/Code/Tabu/Tabu/Tabu/obj/",
         "projectStyle": "PackageReference",
         "UsingMicrosoftNETSdk": false,
         "configFilePaths": [
