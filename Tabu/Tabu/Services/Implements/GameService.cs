@@ -23,9 +23,9 @@ public class GameService(IMapper _mapper,TabuDBContext _context,IMemoryCache _ca
         var entity = await _context.Games.FindAsync(id);
         if (entity is null) throw new GameNotFoundException();
         if (entity.Score is not null) throw new GameAlreadyFinishedException();
-        entity.WrongAnswer = _cache.Get<int>($"{id}_WrongAnswer");
-        entity.FailCount = _cache.Get<int>($"{id}_FailCount");
-        entity.SkipCount = _cache.Get<int>($"{id}_SkipCount");
+        entity.WrongAnswer = _cache.Get<int>("WrongAnswer");
+        entity.FailCount = _cache.Get<int>("FailCount");
+        entity.SkipCount = _cache.Get<int>("SkipCount");
         return entity;
     }
     public async Task StartAsync(Guid id)
@@ -33,8 +33,8 @@ public class GameService(IMapper _mapper,TabuDBContext _context,IMemoryCache _ca
         var entity = await _context.Games.FindAsync(id);
         if (entity is null) throw new GameNotFoundException();
         if (entity.Score is not null) throw new GameAlreadyFinishedException();
-        _cache.Set($"{id}_WrongAnswer", entity.WrongAnswer, TimeSpan.FromMinutes(30));
-        _cache.Set($"{id}_FailCount", entity.FailCount, TimeSpan.FromMinutes(30));
-        _cache.Set($"{id}_SkipCount", entity.SkipCount, TimeSpan.FromMinutes(30));
+        _cache.Set("WrongAnswer", entity.WrongAnswer, TimeSpan.FromMinutes(30));
+        _cache.Set("FailCount", entity.FailCount, TimeSpan.FromMinutes(30));
+        _cache.Set("SkipCount", entity.SkipCount, TimeSpan.FromMinutes(30));
     }
 }

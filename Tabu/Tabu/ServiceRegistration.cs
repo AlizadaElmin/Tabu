@@ -12,7 +12,7 @@ public static class ServiceRegistration
         services.AddScoped<IGameService, GameService>();
         services.AddScoped<IWordService, WordService>();
         services.AddScoped<IBannedWordService, BannedWordService>();
-        services.AddScoped<IMemoryCache, MemoryCache>();
+        // services.AddScoped<IMemoryCache, MemoryCache>();
         return services;
     }
 }
