@@ -1,5 +1,6 @@
 using FluentValidation;
 using Tabu.DTOs.Words;
+using Tabu.Enums;
 
 namespace Tabu.Validators.Word;
 
@@ -15,19 +16,16 @@ public class WordUpdateDtoValidator:AbstractValidator<WordUpdateDto>
             .WithMessage("Maksimum uzunluq 32dən çox ola bilməz.");
         
         RuleFor(x => x.BannedWords)
-            .NotNull();
-            
+            .NotNull()
+            .Must(x => x.Count == (int)GameLevel.Hard)
+            .WithMessage((int)GameLevel.Hard+" ədəd unikal qadağan olunmuş söz yazmalısınız.");
+
+
         RuleForEach(x => x.BannedWords)
             .NotNull()
             .WithMessage("Banned words boş ola bilməz.")
             .MaximumLength(32)
             .WithMessage("Maksimum uzunluq 32dən çox ola bilməz.");
         
-        // RuleFor(x => x.LanguageCode)
-        //     .NotEmpty()
-        //     .NotNull()
-        //     .WithMessage("Language code boş ola bilməz.")
-        //     .MaximumLength(2)
-        //     .WithMessage("Maksimum uzunluq 32dən çox ola bilməz.");
     }
 }

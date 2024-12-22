@@ -12,8 +12,8 @@ using Tabu.DAL;
 namespace Tabu.Migrations
 {
     [DbContext(typeof(TabuDBContext))]
-    [Migration("20241220001601_GameTableCreated")]
-    partial class GameTableCreated
+    [Migration("20241222200720_GamesTableWordsTableBannedWordsTableAndSeedDatas")]
+    partial class GamesTableWordsTableBannedWordsTableAndSeedDatas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,13 +25,34 @@ namespace Tabu.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Tabu.Entities.Game", b =>
+            modelBuilder.Entity("Tabu.Entities.BannedWord", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<int>("WordId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WordId");
+
+                    b.ToTable("BannedWords");
+                });
+
+            modelBuilder.Entity("Tabu.Entities.Game", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("BannedWordCount")
                         .HasColumnType("int");
@@ -64,7 +85,7 @@ namespace Tabu.Migrations
 
                     b.HasIndex("LanguageCode");
 
-                    b.ToTable("Game");
+                    b.ToTable("Games");
                 });
 
             modelBuilder.Entity("Tabu.Entities.Language", b =>
@@ -85,7 +106,59 @@ namespace Tabu.Migrations
 
                     b.HasKey("Code");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Languages");
+
+                    b.HasData(
+                        new
+                        {
+                            Code = "az",
+                            Icon = "https://cdn-icons-png.flaticon.com/512/630/630657.png",
+                            Name = "Azərbaycan"
+                        },
+                        new
+                        {
+                            Code = "en",
+                            Icon = "https://cdn-icons-png.flaticon.com/512/5111/5111640.png",
+                            Name = "English"
+                        });
+                });
+
+            modelBuilder.Entity("Tabu.Entities.Word", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageCode");
+
+                    b.ToTable("Words");
+                });
+
+            modelBuilder.Entity("Tabu.Entities.BannedWord", b =>
+                {
+                    b.HasOne("Tabu.Entities.Word", "Word")
+                        .WithMany("BannedWords")
+                        .HasForeignKey("WordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Word");
                 });
 
             modelBuilder.Entity("Tabu.Entities.Game", b =>
@@ -99,9 +172,27 @@ namespace Tabu.Migrations
                     b.Navigation("Language");
                 });
 
+            modelBuilder.Entity("Tabu.Entities.Word", b =>
+                {
+                    b.HasOne("Tabu.Entities.Language", "Language")
+                        .WithMany("Words")
+                        .HasForeignKey("LanguageCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+                });
+
             modelBuilder.Entity("Tabu.Entities.Language", b =>
                 {
                     b.Navigation("Games");
+
+                    b.Navigation("Words");
+                });
+
+            modelBuilder.Entity("Tabu.Entities.Word", b =>
+                {
+                    b.Navigation("BannedWords");
                 });
 #pragma warning restore 612, 618
         }

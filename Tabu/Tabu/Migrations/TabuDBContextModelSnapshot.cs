@@ -32,7 +32,8 @@ namespace Tabu.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
                     b.Property<int>("WordId")
                         .HasColumnType("int");
@@ -46,11 +47,9 @@ namespace Tabu.Migrations
 
             modelBuilder.Entity("Tabu.Entities.Game", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("BannedWordCount")
                         .HasColumnType("int");
@@ -64,7 +63,7 @@ namespace Tabu.Migrations
                         .HasColumnType("nvarchar(2)")
                         .HasDefaultValue("az");
 
-                    b.Property<int>("Score")
+                    b.Property<int?>("Score")
                         .HasColumnType("int");
 
                     b.Property<int>("SkipCount")

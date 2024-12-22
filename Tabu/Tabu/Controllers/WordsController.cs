@@ -12,7 +12,7 @@ public class WordsController(IWordService _service) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllWords()
     {
-        return Ok(_service.GetAllAsync());
+        return Ok(await _service.GetAllAsync());
     }
 
     [HttpGet]

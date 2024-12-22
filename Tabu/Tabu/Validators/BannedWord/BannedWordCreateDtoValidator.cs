@@ -14,9 +14,6 @@ public class BannedWordCreateDtoValidator:AbstractValidator<BannedWordCreateDto>
             .MaximumLength(32)
             .WithMessage("Maksimum uzunluq 32dən çox ola bilməz.");
 
-        RuleFor(x => x.WordId)
-            .NotEmpty()
-            .NotNull()
-            .WithMessage("Word id boş ola bilməz");
+        
     }
 }

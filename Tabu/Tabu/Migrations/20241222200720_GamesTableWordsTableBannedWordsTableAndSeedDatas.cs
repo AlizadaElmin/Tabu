@@ -1,36 +1,42 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace Tabu.Migrations
 {
     /// <inheritdoc />
-    public partial class LanguagesWordsBannedWordsGamestablesadded : Migration
+    public partial class GamesTableWordsTableBannedWordsTableAndSeedDatas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Game_Languages_LanguageCode",
-                table: "Game");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Game",
-                table: "Game");
-
-            migrationBuilder.RenameTable(
-                name: "Game",
-                newName: "Games");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Game_LanguageCode",
-                table: "Games",
-                newName: "IX_Games_LanguageCode");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Games",
-                table: "Games",
-                column: "Id");
+            migrationBuilder.CreateTable(
+                name: "Games",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BannedWordCount = table.Column<int>(type: "int", nullable: false),
+                    FailCount = table.Column<int>(type: "int", nullable: false),
+                    SkipCount = table.Column<int>(type: "int", nullable: false),
+                    Time = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Score = table.Column<int>(type: "int", nullable: false),
+                    SuccesAnswer = table.Column<int>(type: "int", nullable: false),
+                    WrongAnswer = table.Column<int>(type: "int", nullable: false),
+                    LanguageCode = table.Column<string>(type: "nvarchar(2)", nullable: false, defaultValue: "az")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Games", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Games_Languages_LanguageCode",
+                        column: x => x.LanguageCode,
+                        principalTable: "Languages",
+                        principalColumn: "Code",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Words",
@@ -58,7 +64,7 @@ namespace Tabu.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     WordId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -70,6 +76,15 @@ namespace Tabu.Migrations
                         principalTable: "Words",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Languages",
+                columns: new[] { "Code", "Icon", "Name" },
+                values: new object[,]
+                {
+                    { "az", "https://cdn-icons-png.flaticon.com/512/630/630657.png", "Azərbaycan" },
+                    { "en", "https://cdn-icons-png.flaticon.com/512/5111/5111640.png", "English" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -84,28 +99,24 @@ namespace Tabu.Migrations
                 column: "WordId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Games_LanguageCode",
+                table: "Games",
+                column: "LanguageCode");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Words_LanguageCode",
                 table: "Words",
                 column: "LanguageCode");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Games_Languages_LanguageCode",
-                table: "Games",
-                column: "LanguageCode",
-                principalTable: "Languages",
-                principalColumn: "Code",
-                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Games_Languages_LanguageCode",
-                table: "Games");
-
             migrationBuilder.DropTable(
                 name: "BannedWords");
+
+            migrationBuilder.DropTable(
+                name: "Games");
 
             migrationBuilder.DropTable(
                 name: "Words");
@@ -114,31 +125,15 @@ namespace Tabu.Migrations
                 name: "IX_Languages_Name",
                 table: "Languages");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Games",
-                table: "Games");
+            migrationBuilder.DeleteData(
+                table: "Languages",
+                keyColumn: "Code",
+                keyValue: "az");
 
-            migrationBuilder.RenameTable(
-                name: "Games",
-                newName: "Game");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Games_LanguageCode",
-                table: "Game",
-                newName: "IX_Game_LanguageCode");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Game",
-                table: "Game",
-                column: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Game_Languages_LanguageCode",
-                table: "Game",
-                column: "LanguageCode",
-                principalTable: "Languages",
-                principalColumn: "Code",
-                onDelete: ReferentialAction.Cascade);
+            migrationBuilder.DeleteData(
+                table: "Languages",
+                keyColumn: "Code",
+                keyValue: "en");
         }
     }
 }

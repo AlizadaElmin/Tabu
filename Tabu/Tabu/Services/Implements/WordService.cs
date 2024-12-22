@@ -14,7 +14,7 @@ public class WordService(TabuDBContext _context,IMapper _mapper):IWordService
     public async Task<int> Create(WordCreateDto dto)
     {
         var word = _mapper.Map<Word>(dto);
-        if (await _context.Words.AnyAsync(w => w.LanguageCode == word.LanguageCode && w.Text == word.Text))
+        if (await _context.Words.AnyAsync(w => w.LanguageCode == dto.LanguageCode && w.Text == dto.Text))
         {
             throw new WordExistException();
         }
@@ -23,10 +23,22 @@ public class WordService(TabuDBContext _context,IMapper _mapper):IWordService
         {
             throw new InvalidBannedWordCount();
         }
+        // Word word = new Word
+        // {
+        //     LanguageCode = dto.LanguageCode,
+        //     Text = dto.Text,
+        //     BannedWords = dto.BannedWords.Select(x => new BannedWord
+        //     {
+        //         Text = x,
+        //
+        //     }).ToList()
+        // };
+        
         word.BannedWords = dto.BannedWords.Select(x=>new BannedWord
         {
             Text = x
         }).ToList();;
+        
         
         await _context.Words.AddAsync(word);
         await _context.SaveChangesAsync();
@@ -35,14 +47,14 @@ public class WordService(TabuDBContext _context,IMapper _mapper):IWordService
 
     public async Task<IEnumerable<WordGetDto>> GetAllAsync()
     {
-        var words = await _context.Words.ToListAsync();
+        var words = await _context.Words.Include(w=>w.BannedWords).ToListAsync();
         var wordDtos = _mapper.Map<IEnumerable<WordGetDto>>(words);
         return wordDtos;
     }
 
     public async Task<WordGetDto> GetByIdAsync(int id)
     {
-        var word = await _context.Words.FindAsync(id);
+        var word = await _context.Words.Include(w=>w.BannedWords).FirstOrDefaultAsync(w => w.Id == id);
         if (word == null) throw new WordNotFoundException();
         var wordDto = _mapper.Map<WordGetDto>(word);
         return wordDto;
