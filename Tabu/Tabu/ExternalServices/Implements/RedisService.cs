@@ -20,4 +20,9 @@ public class RedisService(IDistributedCache _redis):ICacheService
         opt.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(seconds);
         await _redis.SetStringAsync(key, json,opt);
     }
+    
+    public async Task RemoveAsync(string key)
+    {
+        await _redis.RemoveAsync(key);
+    }
 }

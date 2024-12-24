@@ -15,12 +15,19 @@ public class LocalCacheService(IMemoryCache _cache):ICacheService
         });
         return value;
     }
-
     public async Task SetAsync<T>(string key, T data, int seconds = 300)
     {
      await Task.Run(() =>
      {
          _cache.Set<T>(key, data, DateTime.Now.AddSeconds(seconds));
      });
+    }
+
+    public async Task RemoveAsync(string key)
+    {
+        await Task.Run(() =>
+        {
+            _cache.Remove(key);
+        });
     }
 }
