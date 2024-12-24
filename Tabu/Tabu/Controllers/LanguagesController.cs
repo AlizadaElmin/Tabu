@@ -22,120 +22,30 @@ public class LanguagesController(ILanguageService _service):ControllerBase
     [Route("{code}")]
     public async Task<IActionResult> GetLanguageById(string code)
     {
-        try
-        {
-            var language = await _service.GetByCodeAsync(code);
-            return Ok(language);
-        }
-        catch (Exception ex)
-        {
-            if (ex is IBaseException ibe)
-            {
-                return StatusCode(ibe.StatusCode, new
-                {
-                    StatusCode = ibe.StatusCode,
-                    Message = ibe.ErrorMessage,
-                });
-            }
-            else
-            {
-                return BadRequest(new
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Message = ex.Message
-                });
-            }
-        }
+       var language = await _service.GetByCodeAsync(code);
+       return Ok(language);
     }
     
     [HttpPost]
     public async Task<IActionResult> Post(LanguageCreateDto dto)
     {
-        try
-        {
-            await _service.CreateAsync(dto);
-            return Created();
-        }
-        catch (Exception ex)
-        {
-            if (ex is IBaseException ibe)
-            {
-                return StatusCode(ibe.StatusCode, new
-                {
-                    StatusCode = ibe.StatusCode,
-                    Message = ibe.ErrorMessage,
-                });
-            }
-            else
-            {
-                return BadRequest(new
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Message = ex.Message
-                });
-            }
-        }
-     
+        await _service.CreateAsync(dto);
+        return Created();
     }
     
     [HttpPut]
     [Route("{code}")]
     public async Task<IActionResult> Put(string code,LanguageUpdateDto dto)
     {
-        try
-        {
-            await _service.UpdateAsync(code,dto);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            if (ex is IBaseException ibe)
-            {
-                return StatusCode(ibe.StatusCode, new
-                {
-                    StatusCode = ibe.StatusCode,
-                    Message = ibe.ErrorMessage,
-                });
-            }
-            else
-            {
-                return BadRequest(new
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Message = ex.Message
-                });
-            }
-        }
+        await _service.UpdateAsync(code,dto);
+        return Ok();
     }
 
     [HttpDelete]
     [Route("{code}")]
     public async Task<IActionResult> Delete(string code)
     {
-        try
-        {
-            await _service.DeleteAsync(code);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            if (ex is IBaseException ibe)
-            {
-                return StatusCode(ibe.StatusCode, new
-                {
-                    StatusCode = ibe.StatusCode,
-                    Message = ibe.ErrorMessage,
-                });
-            }
-            else
-            {
-                return BadRequest(new
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Message = ex.Message
-                });
-            }
-        }
-   
+        await _service.DeleteAsync(code);
+        return Ok();
     }
 }

@@ -48,30 +48,8 @@ public class WordsController(IWordService _service) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(WordCreateDto dto)
     {
-        try
-        {
-            await _service.Create(dto);
-            return Created();
-        }
-        catch (Exception ex)
-        {
-            if (ex is IBaseException ibe)
-            {
-                return StatusCode(ibe.StatusCode, new
-                {
-                    StatusCode = ibe.StatusCode,
-                    Message = ibe.ErrorMessage,
-                });
-            }
-            else
-            {
-                return BadRequest(new
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Message = ex.Message
-                });
-            }
-        }
+        await _service.Create(dto);
+        return Created();
     }
     [HttpPut]
     [Route("{id}")]

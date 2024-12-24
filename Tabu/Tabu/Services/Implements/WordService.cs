@@ -19,7 +19,7 @@ public class WordService(TabuDBContext _context,IMapper _mapper):IWordService
             throw new WordExistException();
         }
 
-        if (dto.BannedWords.Count() != 8)
+        if (dto.BannedWords.Count() != 6)
         {
             throw new InvalidBannedWordCount();
         }

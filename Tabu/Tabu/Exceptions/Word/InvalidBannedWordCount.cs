@@ -9,7 +9,7 @@ public class InvalidBannedWordCount:Exception,IBaseException
 
     public InvalidBannedWordCount()
     {
-        ErrorMessage = "Banned word count must be equal to 8";
+        ErrorMessage = "Banned word count must be equal to 6";
     }
 
     public InvalidBannedWordCount(string message):base(message)

@@ -297,3 +297,6 @@
 /Users/elmin/Desktop/Code/Tabu/Tabu/Tabu/obj/Debug/net8.0/Tabu.pdb
 /Users/elmin/Desktop/Code/Tabu/Tabu/Tabu/obj/Debug/net8.0/Tabu.genruntimeconfig.cache
 /Users/elmin/Desktop/Code/Tabu/Tabu/Tabu/obj/Debug/net8.0/ref/Tabu.dll
+/Users/elmin/Desktop/Code/Tabu/Tabu/Tabu/bin/Debug/net8.0/Microsoft.Extensions.Caching.StackExchangeRedis.dll
+/Users/elmin/Desktop/Code/Tabu/Tabu/Tabu/bin/Debug/net8.0/Pipelines.Sockets.Unofficial.dll
+/Users/elmin/Desktop/Code/Tabu/Tabu/Tabu/bin/Debug/net8.0/StackExchange.Redis.dll
